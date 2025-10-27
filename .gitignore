@@ -1,0 +1,12 @@
+__pycache__
+/.idea
+/babel_v1.0_release
+/originOutput
+*.ipynb
+Output/*
+Output1021/*
+Output1022/*
+Results/*
+Data/*
+
+check.py
