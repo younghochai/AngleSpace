@@ -95,32 +95,6 @@ def plot_joint_trajectory(x, y, z, joint_idx, joint_name, save_name):
     plt.close()
 
 
-def check_label_in_annotations(data_entry, target_label):
-    """
-    frame_ann 또는 seq_anns에서 특정 라벨이 있는지 확인하는 헬퍼 함수
-    """
-    # frame_ann 체크
-    if data_entry.get("frame_ann") is not None:
-        labels_list = data_entry["frame_ann"].get("labels", [])
-        for label_data in labels_list:
-            act_cat_list = label_data.get("act_cat") or []
-            for act_cat in act_cat_list:
-                if act_cat and target_label in act_cat:
-                    return True
-    
-    # seq_anns 체크
-    if data_entry.get("seq_anns") is not None:
-        seq_anns = data_entry["seq_anns"]
-        for seq_ann in seq_anns:
-            labels_list = seq_ann.get("labels", [])
-            for label_data in labels_list:
-                act_cat_list = label_data.get("act_cat") or []
-                for act_cat in act_cat_list:
-                    if act_cat and target_label in act_cat:
-                        return True
-    
-    return False
-
 
 if __name__ == "__main__":
     # 경로 설정
@@ -202,10 +176,10 @@ if __name__ == "__main__":
         for j, jname in lower_body_joints.items():
             j_min = euler_all[:, j, :].min(axis=0)
             j_max = euler_all[:, j, :].max(axis=0)
-            global_min[j] = np.minimum(global_min[j], j_min)
-            global_max[j] = np.maximum(global_max[j], j_max)
-            gmin = global_min[j]
-            gmax = global_max[j]
+            global_joint_min[j] = np.minimum(global_joint_min[j], j_min)
+            global_joint_max[j] = np.maximum(global_joint_max[j], j_max)
+            gmin = global_joint_min[j]
+            gmax = global_joint_max[j]
             print(
                 f"{jname} :      "
                 f"Y-[{gmin[0]:7.2f},{gmax[0]:7.2f}]  "

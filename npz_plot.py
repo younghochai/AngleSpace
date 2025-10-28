@@ -4,11 +4,11 @@ from pathlib import Path
 from utils import *
 from tqdm import tqdm
 
-
 # npz_path = sorted(glob.glob("./Data/Desktop/250922_Primitives/npz/*.npz"))
 
 # npz_path = sorted(glob.glob("./Data/Desktop/250922_DancePrimitives/npz/sh*.npz"))
-npz_path = sorted(glob.glob("./Data/Desktop/250922_DancePrimitives/npz/sp*.npz"))
+# npz_path = sorted(glob.glob("./Data/Desktop/250922_DancePrimitives/npz/sp*.npz"))
+npz_path = sorted(glob.glob("./Data/npz/*.npz"))
 
 # 이 파일들은 156차원, Pose_body가 아니라 pose에 저장되어있음.
 for npz in tqdm(npz_path):  # 하체 데이터만
@@ -28,10 +28,10 @@ for npz in tqdm(npz_path):  # 하체 데이터만
     for j, jname in lower_body_joints.items():
         j_min = euler_all[:, j, :].min(axis=0)
         j_max = euler_all[:, j, :].max(axis=0)
-        global_min[j] = np.minimum(global_min[j], j_min)
-        global_max[j] = np.maximum(global_max[j], j_max)
-        gmin = global_min[j]
-        gmax = global_max[j]
+        global_joint_min[j] = np.minimum(global_joint_min[j], j_min)
+        global_joint_max[j] = np.maximum(global_joint_max[j], j_max)
+        gmin = global_joint_min[j]
+        gmax = global_joint_max[j]
         gr  = gmax - gmin
 
 # 최종 min, max 출력
@@ -40,8 +40,8 @@ print("최종 Global Min/Max 값:")
 print("=" * 60)
 
 for j, jname in lower_body_joints.items():
-    gmin = global_min[j]
-    gmax = global_max[j]
+    gmin = global_joint_min[j]
+    gmax = global_joint_max[j]
     gr = gmax - gmin
     print(
         f"{jname:7s} :   "
