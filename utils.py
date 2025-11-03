@@ -116,12 +116,10 @@ def generate_plot_path(
     )
 
 
-def plot_joint_trajectory(x, y, z, joint_idx, joint_name, save_name, motion_id):
-    gmin = global_min[joint_idx]  # [Y,Z,X]
-    gmax = global_max[joint_idx]  # [Y,Z,X]
-    x_min, x_max = round(float(gmin[2]), 2), round(float(gmax[2]), 2)  # X
-    y_min, y_max = round(float(gmin[0]), 2), round(float(gmax[0]), 2)  # Y
-    z_min, z_max = round(float(gmin[1]), 2), round(float(gmax[1]), 2)  # Zs
+def plot_joint_trajectory(x, y, z, joint_idx, joint_name, save_name, min_vals, max_vals, motion_id):
+    x_min, x_max = round(float(min_vals[2]), 2), round(float(max_vals[2]), 2)  # X
+    y_min, y_max = round(float(min_vals[0]), 2), round(float(max_vals[0]), 2)  # Y
+    z_min, z_max = round(float(min_vals[1]), 2), round(float(max_vals[1]), 2)  # Z
     
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection="3d")
@@ -221,6 +219,33 @@ def plot_joint_trajectory(x, y, z, joint_idx, joint_name, save_name, motion_id):
     plt.close()
 
 
+def check_label_in_annotations(data_entry, target_label):
+    """
+    frame_ann 또는 seq_anns에서 특정 라벨이 있는지 확인하는 헬퍼 함수
+    """
+    # frame_ann 체크
+    if data_entry.get("frame_ann") is not None:
+        labels_list = data_entry["frame_ann"].get("labels", [])
+        for label_data in labels_list:
+            act_cat_list = label_data.get("act_cat") or []
+            for act_cat in act_cat_list:
+                if act_cat and target_label in act_cat:
+                    return True
+    
+    # seq_anns 체크
+    if data_entry.get("seq_anns") is not None:
+        seq_anns = data_entry["seq_anns"]
+        for seq_ann in seq_anns:
+            labels_list = seq_ann.get("labels", [])
+            for label_data in labels_list:
+                act_cat_list = label_data.get("act_cat") or []
+                for act_cat in act_cat_list:
+                    if act_cat and target_label in act_cat:
+                        return True
+    
+    return False
+
+
 # 하체 관절 정보
 lower_body_joints = {
         0: "Pelvis",
@@ -234,11 +259,11 @@ lower_body_joints = {
 
 
 # 글로벌 min/max 초기화 (Y,Z,X 순서)
-global_min = {
+global_joint_min = {
         j: np.array([np.inf, np.inf, np.inf], dtype=float)
         for j in lower_body_joints.keys()
         }
-global_max = {
+global_joint_max = {
         j: np.array([-np.inf, -np.inf, -np.inf], dtype=float)
         for j in lower_body_joints.keys()
         }

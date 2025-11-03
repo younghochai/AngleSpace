@@ -94,27 +94,6 @@ def plot_joint_trajectory(x, y, z, joint_idx, joint_name, save_name):
     plt.close()
 
 
-# 하체 관절 정보
-lower_body_joints = {
-        0: "Pelvis",
-        1: "L_Hip",
-        2: "R_Hip",
-        4: "L_Knee",
-        5: "R_Knee",
-        7: "L_Ankle",
-        8: "R_Ankle",
-    }
-
-# 글로벌 min/max 초기화 (Y,Z,X 순서)
-global_min = {
-        j: np.array([np.inf, np.inf, np.inf], dtype=float)
-        for j in lower_body_joints.keys()
-        }
-global_max = {
-        j: np.array([-np.inf, -np.inf, -np.inf], dtype=float)
-        for j in lower_body_joints.keys()
-        }
-
 if __name__ == "__main__":
     # 경로 설정
     d_folder = "./babel_v1.0_release"
@@ -222,10 +201,10 @@ if __name__ == "__main__":
         for j, jname in lower_body_joints.items():
             j_min = euler_all[:, j, :].min(axis=0)
             j_max = euler_all[:, j, :].max(axis=0)
-            global_min[j] = np.minimum(global_min[j], j_min)
-            global_max[j] = np.maximum(global_max[j], j_max)
-            gmin = global_min[j]
-            gmax = global_max[j]
+            global_joint_min[j] = np.minimum(global_joint_min[j], j_min)
+            global_joint_max[j] = np.maximum(global_joint_max[j], j_max)
+            gmin = global_joint_min[j]
+            gmax = global_joint_max[j]
             print(
                 f"{jname} :      "
                 f"Y-[{gmin[0]:7.2f},{gmax[0]:7.2f}]  "

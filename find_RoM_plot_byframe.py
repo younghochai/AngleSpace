@@ -103,27 +103,6 @@ def plot_joint_trajectory(x, y, z, joint_idx, joint_name, save_name, motion_id):
     plt.close()
 
 
-# 하체 관절 정보
-lower_body_joints = {
-    0: "Pelvis",
-    1: "L_Hip",
-    2: "R_Hip",
-    4: "L_Knee",
-    5: "R_Knee",
-    7: "L_Ankle",
-    8: "R_Ankle",
-}
-
-# 글로벌 min/max 초기화 (Y,Z,X 순서)
-global_min = {
-    j: np.array([np.inf, np.inf, np.inf], dtype=float)
-    for j in lower_body_joints.keys()
-}
-global_max = {
-    j: np.array([-np.inf, -np.inf, -np.inf], dtype=float)
-    for j in lower_body_joints.keys()
-}
-
 if __name__ == "__main__":
 
     # 경로 설정
@@ -246,8 +225,8 @@ if __name__ == "__main__":
                     local_min = np.array([y_arr.min(), z_arr.min(), x_arr.min()])
                     local_max = np.array([y_arr.max(), z_arr.max(), x_arr.max()])
 
-                    global_min[joint_idx] = np.minimum(global_min[joint_idx], local_min)
-                    global_max[joint_idx] = np.maximum(global_max[joint_idx], local_max)
+                    global_joint_min[joint_idx] = np.minimum(global_joint_min[joint_idx], local_min)
+                    global_joint_max[joint_idx] = np.maximum(global_joint_max[joint_idx], local_max)
 
                 # 그래프 그리기
                 joint_name = lower_body_joints[joint_idx]
@@ -256,8 +235,8 @@ if __name__ == "__main__":
             print(f"Completed: {save_plot_name}")
 
         for j, jname in lower_body_joints.items():
-            gmin = global_min[j]
-            gmax = global_max[j]
+            gmin = global_joint_min[j]
+            gmax = global_joint_max[j]
             print(
                 f"{jname:12s} :      "
                 f"Y-[{gmin[0]:7.2f},{gmax[0]:7.2f}]  "
