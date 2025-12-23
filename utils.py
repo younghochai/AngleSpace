@@ -40,7 +40,7 @@ def quaternion_to_matrix(quaternions: torch.Tensor) -> torch.Tensor:
     return o.reshape(quaternions.shape[:-1] + (3, 3))
 
 
-def _index_from_letter(letter: str) -> int: 
+def _index_from_letter(letter: str) -> int:
     if letter == "X":
         return 0
     if letter == "Y":
@@ -133,22 +133,21 @@ def check_label_in_annotations(data_entry, target_label):
 
 # 하체 관절 정보
 lower_body_joints = {
-        0: "Pelvis",
-        1: "L_Hip",
-        2: "R_Hip",
-        4: "L_Knee",
-        5: "R_Knee",
-        7: "L_Ankle",
-        8: "R_Ankle",
-    }
+    0: "Pelvis",
+    1: "L_Hip",
+    2: "R_Hip",
+    4: "L_Knee",
+    5: "R_Knee",
+    7: "L_Ankle",
+    8: "R_Ankle",
+}
 
 
 # 글로벌 min/max 초기화 (Y,Z,X 순서)
 global_joint_min = {
-        j: np.array([np.inf, np.inf, np.inf], dtype=float)
-        for j in lower_body_joints.keys()
-        }
+    j: np.array([np.inf, np.inf, np.inf], dtype=float) for j in lower_body_joints.keys()
+}
 global_joint_max = {
-        j: np.array([-np.inf, -np.inf, -np.inf], dtype=float)
-        for j in lower_body_joints.keys()
-        }
+    j: np.array([-np.inf, -np.inf, -np.inf], dtype=float)
+    for j in lower_body_joints.keys()
+}
