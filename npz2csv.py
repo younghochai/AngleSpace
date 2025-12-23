@@ -2,7 +2,6 @@ import os
 import numpy as np
 import pandas as pd
 
-# npz_path = 'C:/Users/Velab/Desktop/250922_Primitives/npz/a0046.npz'    # 입력 AMASS-style NPZ 파일 경로
 # npz_path = "/home/wonjinmon/Save_CSV/AxisAngleData_251026_squat1.csv"
 # output_csv = 'C:/Users/Velab/Desktop/250922_Primitives/a0046_test.csv' # 출력 CSV 파일 경로
 
