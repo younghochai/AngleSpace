@@ -150,7 +150,7 @@ def plot_graph(path, min_val, max_val, tick_interval=None):
 
         poses = np.load(npz)['poses']  # 156개
         print(poses.shape)
-        poses = poses[..., :66] # body 63개만 사용
+        poses = poses[..., :66]  # body 63개만 사용
 
         # pose_body: (N, 63) -> (N, 21, 3)
         poses_axis = poses.reshape(-1, 22, 3)
