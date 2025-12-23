@@ -136,7 +136,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--output", required=True, help="Output CSV path")
 
     p.add_argument("--joint", required=True, help="Joint name prefix, e.g. right_hip")
-    p.add_argument("--axis", required=True, help="Axis suffix, e.g. wx / wy / wz / ex / ey / ez")
+    p.add_argument(
+        "--axis", required=True, help="Axis suffix, e.g. wx / wy / wz / ex / ey / ez"
+    )
 
     p.add_argument(
         "--frame-range",
@@ -231,7 +233,7 @@ if __name__ == "__main__":
     main()
 
 
-'''
+"""
 python one_axis_editor.py \
   --input Data/csv/edited_s_SO_local_1204.csv \
   --output Data/csv/e_edited_s_SO_local_1204.csv \
@@ -252,4 +254,4 @@ python one_axis_editor.py \
   --scale 0.6 \
   --anchor mean \
   --smooth-window 5
-'''
+"""
