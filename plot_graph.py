@@ -37,24 +37,24 @@ def ROM_from_BABEL():
     motion_list = []
 
     find_labels = ["leg movements", "knee movement", "sports move", "play sports", "exercise/training"]
-    
+
     frame_ann_count = 0
     seq_ann_count = 0
 
     for kl in range(len(keylist)):
         data_entry = babel[file][keylist[kl]]
-        
+
         # annotation 타입 카운트
         if data_entry.get("frame_ann") is not None:
             frame_ann_count += 1
         elif data_entry.get("seq_anns") is not None:
             seq_ann_count += 1
-        
+
         # 라벨 체크
         for label in find_labels:
             if check_label_in_annotations(data_entry, label):
                 motion_list.append(keylist[kl])
-    
+
     motion_list = set(motion_list)
     # print(len(motion_list))
 
@@ -115,7 +115,7 @@ def ROM_from_BABEL():
             global_axis_max = np.maximum(global_axis_max, axis_max_j)
 
         processed += 1
-    
+
     # 최종 min, max 출력
     print("\n" + "=" * 60)
     print("최종 Global Min/Max 값:")
@@ -156,7 +156,7 @@ def plot_graph(path, min_val, max_val, tick_interval=None):
         # pose_body: (N, 63) -> (N, 21, 3)
         poses_axis = poses.reshape(-1, 22, 3)
         print(motion_id, poses_axis.shape)
-        
+
         # (..,3) >>> YZX로
         euler_all = convert_pose_to_euler(poses_axis.reshape(-1, 3)).reshape(-1, 22, 3)
 
