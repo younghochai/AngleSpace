@@ -5,10 +5,6 @@ import re
 import glob
 from tqdm import tqdm
 from scipy.spatial.transform import Rotation as R
-import matplotlib.pyplot as plt
-from matplotlib.animation import PillowWriter
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.animation import FuncAnimation
 
 input_csv_folder = '/home/wonjinmon/문서/AngleSpace/Data/csv'  # CSV 파일이 있는 폴더
 template_npz     = '/home/wonjinmon/문서/AngleSpace/Data/Run C24 - quick side step left_poses.npz'
@@ -24,10 +20,10 @@ POSE_DIMS  = NUM_JOINTS * 3  # 156 dims
 
 # --- 3) 템플릿 NPZ 로드: 메타데이터 복사 ---
 template = np.load(template_npz, allow_pickle=True)
-gender          = template['gender']
+gender = template['gender']
 mocap_framerate = template['mocap_framerate']
-betas           = template['betas']          # (16,)
-dmpl_dim        = template['dmpls'].shape[1]  # e.g., 8
+betas = template['betas']          # (16,)
+dmpl_dim = template['dmpls'].shape[1]  # e.g., 8
 
 # --- 4) 모든 CSV 파일 찾기 ---
 csv_files = glob.glob(os.path.join(input_csv_folder, '*.csv'))
