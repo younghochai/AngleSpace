@@ -4,10 +4,7 @@ from pathlib import Path
 from utils import *
 from tqdm import tqdm
 
-# npz_path = sorted(glob.glob("./Data/Desktop/250922_Primitives/npz/*.npz"))
 
-# npz_path = sorted(glob.glob("./Data/Desktop/250922_DancePrimitives/npz/sh*.npz"))
-# npz_path = sorted(glob.glob("./Data/Desktop/250922_DancePrimitives/npz/sp*.npz"))
 npz_path = sorted(glob.glob("./Data/npz/*.npz"))
 
 # 이 파일들은 156차원, Pose_body가 아니라 pose에 저장되어있음.
