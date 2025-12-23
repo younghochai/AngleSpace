@@ -2,7 +2,6 @@ import os
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import MaxNLocator, MultipleLocator
 
 
@@ -309,7 +308,6 @@ def plot_joint_angles_per_frame(
     plt.suptitle(f"{joint_idx+1}. {joint_name}", fontsize=14, fontweight="bold")
 
     plt.subplots_adjust(hspace=0.6)  # 세로 간격 조절 (값이 클수록 간격이 넓어짐)
-    # plt.tight_layout()
 
     # 저장 경로 생성 및 저장
     save_path = generate_plot_path(
