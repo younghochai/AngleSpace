@@ -203,7 +203,7 @@ def main():
     used = set(prefix_cols) | set(body_cols)
     rest_cols = [c for c in cols if c not in used]
 
-    pos_cols = [c for c in cols if c.endswith(("_px","_py","_pz"))]
+    pos_cols = [c for c in cols if c.endswith(("_px", "_py", "_pz"))]
     aa_cols = [c for c in cols if c.endswith(tuple(args.aa_suffixes))]
     new_cols = prefix_cols + aa_cols + pos_cols + rest_cols
     out = out[new_cols]
@@ -218,10 +218,10 @@ if __name__ == "__main__":
     main()
 
 
-'''
+"""
 python 33euler_to_aa_csv.py \
   --input  Data/csv/11edited_s_stepover_local_1118.csv \
   --output Data/csv/33edited_s_stepover_local_1118.csv \
   --euler-suffixes ex ey ez \
   --aa-suffixes wx wy wz
-'''
+"""
