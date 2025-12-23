@@ -21,7 +21,9 @@ def _moving_average(a: np.ndarray, k: int) -> np.ndarray:
     return np.convolve(ap, kernel, mode="valid")
 
 
-def parse_keyframe_specs(specs: List[str], cols: List[str]) -> Dict[int, Dict[str, float]]:
+def parse_keyframe_specs(
+    specs: List[str], cols: List[str]
+) -> Dict[int, Dict[str, float]]:
     """
     --keyframe 옵션 파싱 (linear / global-affine / scale / local 용)
     예) "10:-20,,30"  -> frame 10, cols[0]=-20, cols[2]=30
@@ -136,9 +138,7 @@ def apply_keyframe_edits_local_bump(
 
     for frame_idx, col_to_val in keyframe_edits.items():
         if frame_idx < 0 or frame_idx >= n:
-            raise IndexError(
-                f"local mode frame {frame_idx} out of range (0 ~ {n-1})"
-            )
+            raise IndexError(f"local mode frame {frame_idx} out of range (0 ~ {n-1})")
 
         for col_name, target_value in col_to_val.items():
             if col_name not in out.columns:
@@ -211,8 +211,7 @@ def apply_pivot_segment_1d(
     j_t = ft - fs
     if not (0 < j_t < m - 1):
         raise ValueError(
-            f"target frame must lie strictly inside [fs, fe] "
-            f"(got j_t={j_t}, m={m})"
+            f"target frame must lie strictly inside [fs, fe] " f"(got j_t={j_t}, m={m})"
         )
 
     # --- 제약 조건: fs, ft, fe 값 고정 ---
@@ -221,9 +220,9 @@ def apply_pivot_segment_1d(
     # x[m-1] = 원본 fe 값
     b = np.array([seg[0], v_target, seg[-1]], dtype=float)
     A = np.zeros((3, m), dtype=float)
-    A[0, 0] = 1.0       # fs
-    A[1, j_t] = 1.0     # ft
-    A[2, m - 1] = 1.0   # fe
+    A[0, 0] = 1.0  # fs
+    A[1, j_t] = 1.0  # ft
+    A[2, m - 1] = 1.0  # fe
 
     # --- 라플라시안 행렬 L (2차 차분) ---
     # L x = [x[i-1] - 2 x[i] + x[i+1]] (i = 1..m-2)
@@ -265,9 +264,7 @@ def apply_pivot_segment_1d(
         # 혹시 특이행렬 뜨면, 제약조건에 큰 가중치 준 LSQ로 fallback
         w = 1000.0
         M = np.vstack((L, w * A))
-        rhs2 = np.concatenate(
-            (np.zeros(L.shape[0], dtype=float), w * b)
-        )
+        rhs2 = np.concatenate((np.zeros(L.shape[0], dtype=float), w * b))
         x, *_ = np.linalg.lstsq(M, rhs2, rcond=None)
 
     # 편집 구간만 새 값으로 덮어쓰기
@@ -291,8 +288,7 @@ def parse_pivot_keyframe_spec(spec: str):
     """
     if ":" not in spec:
         raise ValueError(
-            f"pivot keyframe 형식 잘못됨: {spec!r} "
-            f"(예: 10-20-30:,,15)"
+            f"pivot keyframe 형식 잘못됨: {spec!r} " f"(예: 10-20-30:,,15)"
         )
 
     frame_part, value_part = spec.split(":", 1)
@@ -361,8 +357,7 @@ def apply_keyframe_edits_pivot(
         col_name = cols[axis_idx]
         if col_name not in out.columns:
             raise KeyError(
-                f"pivot 대상 컬럼 {col_name!r} 이 DataFrame에 없음 "
-                f"(spec={spec!r})"
+                f"pivot 대상 컬럼 {col_name!r} 이 DataFrame에 없음 " f"(spec={spec!r})"
             )
 
         values = out[col_name].to_numpy(dtype=float, copy=True)
@@ -477,7 +472,7 @@ if __name__ == "__main__":
     main()
 
 
-'''
+"""
 python 22keyframe_editor_euler.py \
   --input Data/csv/11edited_s_stepover_local_1118.csv \
   --output Data/csv/22edited_s_stepover_local_1118.csv \
@@ -486,7 +481,7 @@ python 22keyframe_editor_euler.py \
   --keyframe 25:-40,0,20 \
   --smooth-window 5
   --mode global-affine
-'''
+"""
 
 # python 22keyframe_editor_euler.py \
 #   --input  in.csv \
