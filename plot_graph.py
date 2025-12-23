@@ -186,11 +186,6 @@ def plot_graph(path, min_val, max_val, tick_interval=None):
 
 
 if __name__ == "__main__":
-    # path = "./Data/*.npz"
-    # path = "./Data/npz/20251105_WJ_stepover.npz"
-    # path = "./Data/Desktop/250922_DancePrimitives/npz/*.npz"
-    # path = "./Data/dribble_analysis/npz/*.npz"
-
     path = "./Data/npz/*.npz"
     min_value, max_value = ROM_from_BABEL()
     plot_graph(path, min_value, max_value, tick_interval=15)
