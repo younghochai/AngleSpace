@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 
 # npz_path = "/home/wonjinmon/Save_CSV/AxisAngleData_251026_squat1.csv"
-# output_csv = 'C:/Users/Velab/Desktop/250922_Primitives/a0046_test.csv' # 출력 CSV 파일 경로
 
 # 1) NPZ 로드
 data = np.load(npz_path, allow_pickle=True)
