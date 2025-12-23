@@ -10,9 +10,9 @@ from matplotlib.animation import PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
 
-input_csv_folder = '/home/wonjinmon/문서/AngleSpace/Data'  # CSV 파일이 있는 폴더
+input_csv_folder = '/home/wonjinmon/문서/AngleSpace/Data/csv'  # CSV 파일이 있는 폴더
 template_npz     = '/home/wonjinmon/문서/AngleSpace/Data/Run C24 - quick side step left_poses.npz'
-output_npz_folder = '/home/wonjinmon/문서/AngleSpace/Data'  # 결과 NPZ를 저장할 폴더
+output_npz_folder = '/home/wonjinmon/문서/AngleSpace/Data/npz'  # 결과 NPZ를 저장할 폴더
 
 # --- 1) 출력 폴더가 없으면 생성
 os.makedirs(output_npz_folder, exist_ok=True)
@@ -38,12 +38,13 @@ for csv_path in tqdm(csv_files, desc="Converting CSV to NPZ"):
     # 파일명만 추출해서 출력 NPZ 경로 생성
     filename = os.path.basename(csv_path)
     output_npz = os.path.join(output_npz_folder, os.path.splitext(filename)[0] + '.npz')
-    
+    print(output_npz)
+
     try:
         # --- CSV 로드 및 프레임 수 ---
         df = pd.read_csv(csv_path)
         T_csv = len(df)
-        
+
         # --- pelvis 위치 (trans) 추출 ---
         trans = df[['pelvis_px','pelvis_py','pelvis_pz']].to_numpy()  # (T_csv, 3)
         

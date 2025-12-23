@@ -181,7 +181,7 @@ def main():
     p.add_argument("--r-scale", type=float, default=1.0, help="radius scale (polar)")
     p.add_argument("--r-offset", type=float, default=0.0, help="radius offset (polar)")
     # common
-    p.add_argument("--input", default='./Data/csv/251101_stepover.csv',  help="input CSV path")
+    p.add_argument("--input", required=True, help="input CSV path")
     p.add_argument("--anchor", type=str, default="origin", choices=["origin", "mean", "start", "end"],
                    help="transform anchor")
     p.add_argument("--smooth-window", type=int, default=None, help="moving average window (frames) applied after transform")
@@ -189,6 +189,7 @@ def main():
     args = p.parse_args()
 
     df = pd.read_csv(args.input)
+
     out = edit_2axis_trajectory(
         df=df,
         joint=args.joint,
