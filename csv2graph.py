@@ -1,5 +1,4 @@
 import os
-import json
 import glob
 from pathlib import Path
 import numpy as np
@@ -10,8 +9,6 @@ import matplotlib.pyplot as plt  # 추가
 from utils import (
     convert_pose_to_euler,
     lower_body_joints,
-    global_joint_min,
-    global_joint_max,
 )
 
 
