@@ -23,7 +23,9 @@ def _moving_average(a: np.ndarray, k: int) -> np.ndarray:
     return np.convolve(ap, kernel, mode="valid")
 
 
-def parse_keyframe_specs(specs: List[str], cols: List[str]) -> Dict[int, Dict[str, float]]:
+def parse_keyframe_specs(
+    specs: List[str], cols: List[str]
+) -> Dict[int, Dict[str, float]]:
     """
     --cols R_Hip_X R_Hip_Y R_Hip_Z
     --keyframe 10:-20,5,10
@@ -162,7 +164,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-'''
+"""
 python 2axis_CSVeditor.py \
   --input Data/csv/sensing_stepover_local_1118.csv \
   --output Data/csv/Edited_s_stepover_local_1118.csv \
@@ -171,4 +173,4 @@ python 2axis_CSVeditor.py \
   --keyframe 25:-40,0,20 \
   --keyframe 40:-10,10,5 \
   --smooth-window 5
-'''
+"""
