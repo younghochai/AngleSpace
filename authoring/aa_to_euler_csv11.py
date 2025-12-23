@@ -80,7 +80,7 @@ def main():
         euler_list = []
         for _, row in out.iterrows():
             aa_vec = row[aa_cols].to_numpy(dtype=float)  # rad 가정
-            e_deg = convert_pose_to_euler(aa_vec)        # np.array(3,) deg
+            e_deg = convert_pose_to_euler(aa_vec)  # np.array(3,) deg
             euler_list.append(e_deg)
 
         e_arr = np.vstack(euler_list)  # (T,3)
@@ -107,14 +107,14 @@ if __name__ == "__main__":
     main()
 
 
-'''
+"""
 python 11aa_to_euler_csv.py \
   --input  Data/csv/sensing_stepover_local_1118.csv \
   --output Data/csv/11edited_s_stepover_local_1118.csv \
   --aa-suffixes wx wy wz \
   --euler-suffixes ex ey ez \
   --drop-aa
-'''
+"""
 
 # python aa_to_euler_csv11.py \
 #   --input  Data/csv/edited_1axis_s_SO_local_1204.csv \
