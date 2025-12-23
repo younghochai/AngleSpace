@@ -5,8 +5,17 @@ from pathlib import Path
 import numpy as np
 from os.path import join as ospj
 from tqdm import tqdm
-from utils import *
-
+from utils import (
+    check_label_in_annotations,
+    convert_pose_to_euler,
+    lower_body_joints,
+    global_joint_min,
+    global_joint_max,
+)
+from utils_graph import (
+    plot_joint_trajectory,
+    plot_selected_right_joint_axes
+)
 
 global_axis_min = np.array([np.inf, np.inf, np.inf], dtype=float)  # [Y, Z, X]
 global_axis_max = np.array([-np.inf, -np.inf, -np.inf], dtype=float)  # [Y, Z, X]
@@ -27,24 +36,24 @@ def ROM_from_BABEL():
     motion_list = []
 
     find_labels = ["leg movements", "knee movement", "sports move", "play sports", "exercise/training"]
-    
+
     frame_ann_count = 0
     seq_ann_count = 0
 
     for kl in range(len(keylist)):
         data_entry = babel[file][keylist[kl]]
-        
+
         # annotation 타입 카운트
         if data_entry.get("frame_ann") is not None:
             frame_ann_count += 1
         elif data_entry.get("seq_anns") is not None:
             seq_ann_count += 1
-        
+
         # 라벨 체크
         for label in find_labels:
             if check_label_in_annotations(data_entry, label):
                 motion_list.append(keylist[kl])
-    
+
     motion_list = set(motion_list)
     # print(len(motion_list))
 
@@ -98,12 +107,6 @@ def ROM_from_BABEL():
 
             gmin = global_joint_min[j]
             gmax = global_joint_max[j]
-            # print(
-            #     f"{jname} :      "
-            #     f"Y-[{gmin[0]:7.2f},{gmax[0]:7.2f}]  "
-            #     f"Z-[{gmin[1]:7.2f},{gmax[1]:7.2f}]  "
-            #     f"X-[{gmin[2]:7.2f},{gmax[2]:7.2f}]"
-            # )
 
             axis_min_j = euler_all[:, j, :].min(axis=0)  # (3,) -> 해당 관절의 Y,Z,X 최소
             axis_max_j = euler_all[:, j, :].max(axis=0)  # (3,) -> 해당 관절의 Y,Z,X 최대
@@ -111,7 +114,7 @@ def ROM_from_BABEL():
             global_axis_max = np.maximum(global_axis_max, axis_max_j)
 
         processed += 1
-    
+
     # 최종 min, max 출력
     print("\n" + "=" * 60)
     print("최종 Global Min/Max 값:")
@@ -138,20 +141,21 @@ def ROM_from_BABEL():
     return global_axis_min, global_axis_max
 
 
-def plot_graph(path, min_val, max_val):
+def plot_graph(path, min_val, max_val, tick_interval=None):
     npz_path = sorted(glob.glob(path))
     print(len(npz_path))
 
     for npz in tqdm(npz_path):
         motion_id = Path(npz).stem
 
-        poses = np.load(npz)['poses'] # 156개
-        poses = poses[..., :66] # body 63개만 사용
+        poses = np.load(npz)['poses']  # 156개
+        print(poses.shape)
+        poses = poses[..., :66]  # body 63개만 사용
 
         # pose_body: (N, 63) -> (N, 21, 3)
         poses_axis = poses.reshape(-1, 22, 3)
         print(motion_id, poses_axis.shape)
-        
+
         # (..,3) >>> YZX로
         euler_all = convert_pose_to_euler(poses_axis.reshape(-1, 3)).reshape(-1, 22, 3)
 
@@ -162,10 +166,29 @@ def plot_graph(path, min_val, max_val):
             y = euler_all[:, j, 0].tolist()  # Y
             z = euler_all[:, j, 1].tolist()  # Z
 
-            plot_joint_trajectory(x, y, z, j, jname, 'sequence', min_val, max_val, motion_id=motion_id)
-    
+            plot_joint_trajectory(
+                x, y, z, j, jname, 'sequence_v2', min_val, max_val,
+                motion_id=motion_id, tick_interval=tick_interval
+            )
+
+            # plot_joint_angles_per_frame(
+            #     x, y, z, j, jname, motion_id, 'graph',
+            #     y_axis_range=(min_val, max_val)
+            # )
+
+            if jname in ["R_Hip", "R_Knee", "R_Ankle"]:
+                plot_selected_right_joint_axes(
+                    x, y, z, j, jname, motion_id,
+                    base_path="Results/",
+                    y_axis_range=(min_val, max_val)
+                )
+
 
 if __name__ == "__main__":
-    path = "./Data/*.npz"
+    path = "./Data/npz/*.npz"
     min_value, max_value = ROM_from_BABEL()
-    plot_graph(path, min_value, max_value)
+    plot_graph(path, min_value, max_value, tick_interval=15)
+
+    # path = "./Data/dribble_analysis/npz/*.npz"
+    # min_value, max_value = ROM_from_BABEL()
+    # plot_graph(path, min_value, max_value, tick_interval=30)
