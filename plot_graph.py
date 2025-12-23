@@ -148,7 +148,7 @@ def plot_graph(path, min_val, max_val, tick_interval=None):
     for npz in tqdm(npz_path):
         motion_id = Path(npz).stem
 
-        poses = np.load(npz)['poses'] # 156개
+        poses = np.load(npz)['poses']  # 156개
         print(poses.shape)
         poses = poses[..., :66] # body 63개만 사용
 
