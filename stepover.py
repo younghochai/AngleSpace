@@ -5,7 +5,6 @@ from pathlib import Path
 import numpy as np
 from os.path import join as ospj
 from tqdm import tqdm
-from utils import *
 
 
 global_axis_min = np.array([np.inf, np.inf, np.inf], dtype=float)  # [Y, Z, X]
