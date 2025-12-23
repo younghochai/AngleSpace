@@ -14,7 +14,6 @@ from utils import (
 )
 from utils_graph import (
     plot_joint_trajectory,
-    plot_joint_angles_per_frame,
     plot_selected_right_joint_axes
 )
 
