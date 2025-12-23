@@ -7,7 +7,7 @@ from tqdm import tqdm
 from scipy.spatial.transform import Rotation as R
 
 input_csv_folder = '/home/wonjinmon/문서/AngleSpace/Data/csv'  # CSV 파일이 있는 폴더
-template_npz     = '/home/wonjinmon/문서/AngleSpace/Data/Run C24 - quick side step left_poses.npz'
+template_npz = '/home/wonjinmon/문서/AngleSpace/Data/Run C24 - quick side step left_poses.npz'
 output_npz_folder = '/home/wonjinmon/문서/AngleSpace/Data/npz'  # 결과 NPZ를 저장할 폴더
 
 # --- 1) 출력 폴더가 없으면 생성
